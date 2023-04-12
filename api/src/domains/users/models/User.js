@@ -29,7 +29,7 @@ const User = sequelize.define('User', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    resetPasswordToken: {
+    passwordToken: {
         type: DataTypes.STRING,
         allowNull: true
     }   
