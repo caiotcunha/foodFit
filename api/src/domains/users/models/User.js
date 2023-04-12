@@ -28,6 +28,10 @@ const User = sequelize.define('User', {
     age: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    resetPasswordToken: {
+        type: DataTypes.STRING,
+        allowNull: true
     }   
 })
 
