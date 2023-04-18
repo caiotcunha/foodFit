@@ -8,4 +8,9 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+const usersRouter = require('../src/domains/users/controllers/index')
+app.use('/api/users', usersRouter)
+
+
+
 module.exports = app;

@@ -1,8 +1,9 @@
-const app = require("../../../../config/expressConfig");
 const User = require("../models/User");
-const sequelize = require('../../../../database/index');
+const router = require("express").Router()
 
-
-route.get('/', async(req, res,next) => {
-    sequelize.sync
+router.get('/', (req, res, next) => {
+    res.send("Página principal das dietas")
 })
+
+
+module.exports = router
