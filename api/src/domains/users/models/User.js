@@ -33,7 +33,7 @@ const User = sequelize.define('User', {
     passwordToken: {
         type: DataTypes.STRING,
         allowNull: true
-    }
+    } 
 })
 
 User.hasMany(Diet);
