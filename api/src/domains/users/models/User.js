@@ -1,5 +1,6 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../../../../database/index');
+const Diet = require('../../diets/models/Diet');
 
 const User = sequelize.define('User', {
     id: {
@@ -32,7 +33,10 @@ const User = sequelize.define('User', {
     passwordToken: {
         type: DataTypes.STRING,
         allowNull: true
-    }   
+    }
 })
+
+User.hasMany(Diet);
+Diet.belongsTo(User);
 
 module.exports = User;
