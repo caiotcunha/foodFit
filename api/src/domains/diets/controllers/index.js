@@ -35,15 +35,22 @@ router.get('/:UserId', async (req, res, next) => {
 
 
 // Get by ID
-router.get('/:id', async (req, res, next) => {
+router.get('/:UserId/:id', async (req, res, next) => {
     try {
-        const diets = await Diet.findByPk(req.params.id, {
+        const diet =  await Diet.findOne({
+            where: {
+                UserId: req.params.UserId,
+                id: req.params.id
+            },
             attributes: {
                 exclude: ['created_at', 'updated_at']
             }
         })
-
-        res.status(200).send(diets)
+        if(!diet){
+            throw new error
+        }
+        
+        res.status(200).send(diet)
     } catch (error) {
         next(error)
     }
