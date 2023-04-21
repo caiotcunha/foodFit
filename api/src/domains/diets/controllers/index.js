@@ -1,4 +1,3 @@
-const { where } = require("sequelize")
 const Diet = require("../models/Diet")
 const router = require("express").Router()
 
