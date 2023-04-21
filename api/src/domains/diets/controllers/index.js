@@ -1,13 +1,54 @@
-const app = require("../../../../config/expressConfig");
-const User = require("../models/User");
-const sequelize = require('../../../../database/index');
+const { where } = require("sequelize")
+const Diet = require("../models/Diet")
+const router = require("express").Router()
 
 
 // Create
-// Get All Diets (do user)
-// Get by ID
+router.post('/', async (req, res, next) => {
+    try {
+        await Diet.create(req.body)
 
-
-route.get('/', async(req, res,next) => {
-    sequelize.sync
+        res.status(201).send("Dieta criada com sucesso!")
+    } catch (error) {
+        next(error)
+    }
 })
+
+// Get All Diets (do user)
+router.get('/:UserId', async (req, res, next) => {
+    try {
+        const diets = await Diet.findAll({
+            where: {
+                UserId: req.params.UserId
+            },
+            attributes: {
+                exclude: ['created_at', 'updated_at']
+            }
+            
+        })
+
+        res.status(200).send(diets)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+// Get by ID
+router.get('/:id', async (req, res, next) => {
+    try {
+        const diets = await Diet.findByPk(req.params.id, {
+            attributes: {
+                exclude: ['created_at', 'updated_at']
+            }
+        })
+
+        res.status(200).send(diets)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+
+module.exports = router
