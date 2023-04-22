@@ -18,7 +18,7 @@ router.get('/userDiets/:UserId', async (req, res, next) => {
                 UserId: req.params.UserId
             },
             attributes: {
-                exclude: ['created_at', 'updated_at']
+                exclude: ['createdAt', 'updatedAt']
             }
         });
 
@@ -32,12 +32,13 @@ router.get('/:dietId', async (req, res, next) => {
     try {
         const diet =  await Diet.findByPk(req.params.id, {
             attributes: {
-                exclude: ['created_at', 'updated_at']
+                exclude: ['createdAt', 'updatedAt']
             }
         });
-        if(!diet){
-            throw new error;
-        }
+
+        // if(!diet){
+        //     throw new error;
+        // }
         
         res.status(200).send(diet);
     } catch (error) {

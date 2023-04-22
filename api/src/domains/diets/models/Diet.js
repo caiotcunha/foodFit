@@ -30,10 +30,4 @@ const Diet = sequelize.define('Diet', {
     }   
 });
 
-// Diet.sync({alter: false, force: false})
-//   .then(() => {
-//     console.log('Diet table was (re)created');
-//   })
-//   .catch((err) => console.log(err));
-
 module.exports = Diet

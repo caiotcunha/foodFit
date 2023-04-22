@@ -49,4 +49,10 @@ Diet.belongsTo(User);
 //   })
 //   .catch((err) => console.log(err));
 
+// Diet.sync({alter: false, force: true})
+//   .then(() => {
+//     console.log('Diet table was (re)created');
+//   })
+//   .catch((err) => console.log(err));
+
 module.exports = User;

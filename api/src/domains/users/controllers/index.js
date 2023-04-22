@@ -27,7 +27,7 @@ router.get('/', async (req, res, next) => {
     try {
         const users =  await User.findAll({
             attributes: {
-                exclude: ['created_at', 'updated_at']
+                exclude: ['createdAt', 'updatedAt']
             }
         });
 
@@ -39,11 +39,12 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
     try {
-        const user =  await User.findByPk({
+        const user =  await User.findByPk(req.params.id, {
             attributes: {
-                exclude: ['created_at', 'updated_at']
+                exclude: ['createdAt', 'updated_at']
             }
         });
+        
         if(!user){
             throw new error;
         }
