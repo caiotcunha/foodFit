@@ -28,69 +28,82 @@ router.post('/logout',
     })
 
 
-router.post('/', async (req, res, next) => {
-    try {
-        const user = {
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            weight: req.body.weight,
-            height: req.body.height,
-            age: req.body.age
+router.post('/', 
+    async (req, res, next) => {
+        try {
+            const user = {
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+                weight: req.body.weight,
+                height: req.body.height,
+                age: req.body.age
+            }
+
+            user.password = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
+
+            await User.create(user);
+            res.status(201).send('Usuário criado');
+        } catch (error) {
+            next(error);
         }
-
-        user.password = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
-
-        await User.create(user);
-        res.status(201).send('Usuário criado');
-    } catch (error) {
-        next(error);
-    }
 })
 
-router.get('/', async (req, res, next) => {
-    try {
-        const users =  await User.findAll({
-            attributes: {
-                exclude: ['createdAt', 'updatedAt']
-            }
-        });
+router.get('/', 
+    async (req, res, next) => {
+        try {
+            const users =  await User.findAll({
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                }
+            });
 
-        res.status(200).send(users);
-    } catch (error) {
-        next(error);
+            res.status(200).send(users);
+        } catch (error) {
+            next(error);
     }
 })
 
 router.get('/myProfile', 
     verifyJwt,
     async (req, res, next) => {
-    try {
-        const user =  await User.findByPk(req.user.id, {
-            attributes: {
-                exclude: ['createdAt', 'updated_at']
+        try {
+            const user =  await User.findByPk(req.user.id, {
+                attributes: {
+                    exclude: ['createdAt', 'updated_at']
+                }
+            });
+            
+            if(!user){
+                throw new error;
             }
-        });
-        
-        if(!user){
-            throw new error;
+            
+            res.status(200).send(user);
+        } catch (error) {
+            next(error);
         }
-        
-        res.status(200).send(user);
-    } catch (error) {
-        next(error);
-    }
 })
 
-router.put('/:id', async (req, res, next) => {
-    try {
-        const user =  await User.findByPk(req.params.id);
-        await user.update(req.body);
-        
-        res.status(200).send("Usuário alterado com sucesso!");
-    } catch (error) {
-        next(error);
-    }
+router.put('/:id', 
+    verifyJwt,
+    async (req, res, next) => {
+        try {
+            const user =  await User.findByPk(req.params.id);
+
+            if (!user) {
+                throw new QueryError('Usuário não encontrado!');
+            }
+
+            if (req.body.password) {
+                req.body.password = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
+            }
+
+            await user.update(req.body);
+            
+            res.status(200).send("Usuário alterado com sucesso!");
+        } catch (error) {
+            next(error);
+        }
 })
 
 router.post('/forgotPassword',
