@@ -2,10 +2,25 @@ const User = require("../models/User");
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const generalConstants = require("../../../../utils/constants/generalConstants");
+const statusCodes = require("../../../../utils/constants/statusCodes");
 
-router.post('/login', notLoggedIn, logginMiddleware);
+const { loginMiddleware,
+    notLoggedIn,
+    verifyJwt} = require('../../../middlewares/auth');
 
-router.post('logout', )
+
+router.post('/login', notLoggedIn, loginMiddleware);
+
+router.post('/logout', 
+    verifyJwt,
+    async (req, res, next) => {
+        try {
+            res.clearCookie('jwt');
+            res.status(statusCodes.NO_CONTENT).end();
+        } catch (error) {
+            next (error);
+        }
+    })
 
 
 router.post('/', async (req, res, next) => {
