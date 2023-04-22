@@ -35,11 +35,6 @@ router.get('/:dietId', async (req, res, next) => {
                 exclude: ['createdAt', 'updatedAt']
             }
         });
-        console.log(diet);
-
-        // if(!diet){
-        //     throw new error;
-        // }
         
         res.status(200).send(diet);
     } catch (error) {
