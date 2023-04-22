@@ -1,10 +1,22 @@
 const User = require("../models/User");
 const router = require("express").Router();
+const bcrypt = require('bcrypt');
+const generalConstants = require("../../../../utils/constants/generalConstants");
 
 router.post('/', async (req, res, next) => {
     try {
-        await User.create(req.body);
+        const user = {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            weight: req.body.weight,
+            height: req.body.height,
+            age: req.body.age
+        }
 
+        user.password = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
+
+        await User.create(user);
         res.status(201).send('Usuário criado');
     } catch (error) {
         next(error);
