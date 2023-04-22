@@ -74,10 +74,6 @@ router.get('/myProfile',
                 }
             });
             
-            if(!user){
-                throw new error;
-            }
-            
             res.status(200).send(user);
         } catch (error) {
             next(error);
