@@ -11,6 +11,7 @@ app.use(express.urlencoded({
 const usersRouter = require('../src/domains/users/controllers/index')
 app.use('/api/users', usersRouter)
 
-
+const dietsRouter = require('../src/domains/diets/controllers/index')
+app.use('/api/diets', dietsRouter)
 
 module.exports = app;

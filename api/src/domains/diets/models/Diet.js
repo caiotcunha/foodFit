@@ -1,5 +1,5 @@
-const {DataTypes} = require('sequelize');
-const sequelize = require('../../../../database/index');
+const {DataTypes} = require('sequelize')
+const sequelize = require('../../../../database/index')
 
 const Diet = sequelize.define('Diet', {
     id: {
@@ -30,4 +30,4 @@ const Diet = sequelize.define('Diet', {
     }   
 })
 
-module.exports = Diet;
+module.exports = Diet
