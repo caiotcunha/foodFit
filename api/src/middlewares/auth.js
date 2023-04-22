@@ -69,10 +69,9 @@ function verifyJwt(req, res, next) {
     }
 }
 
-function notLoggedIn (req, res, next) {
+const notLoggedIn = (req, res, next) => {
     try {
         const token = cookieExtractor(req);
-
         if (token) {
             jwt.verify(
                 token,
@@ -83,13 +82,13 @@ function notLoggedIn (req, res, next) {
                     }
                 },
             );
-
-            next();
         }
+
+        next();
     } catch (error) {
-        next (error);
+        next(error);
     }
-}
+};
 
 module.exports = {
     loginMiddleware,

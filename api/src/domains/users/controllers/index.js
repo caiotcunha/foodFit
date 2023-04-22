@@ -1,13 +1,18 @@
 const User = require("../models/User");
 const router = require("express").Router();
 const bcrypt = require('bcrypt');
+const randtoken = require('rand-token');
 const generalConstants = require("../../../../utils/constants/generalConstants");
 const statusCodes = require("../../../../utils/constants/statusCodes");
+const sendEmail = require("../../../../utils/functions/sendEmail");
+const message = require('../../../../utils/constants/message');
 
 const { loginMiddleware,
     notLoggedIn,
     verifyJwt} = require('../../../middlewares/auth');
 
+const QueryError = require("../../../../errors/QueryError");
+const InternalServerError = require("../../../../errors/InternalServerError")
 
 router.post('/login', notLoggedIn, loginMiddleware);
 
@@ -57,9 +62,11 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/myProfile', 
+    verifyJwt,
+    async (req, res, next) => {
     try {
-        const user =  await User.findByPk(req.params.id, {
+        const user =  await User.findByPk(req.user.id, {
             attributes: {
                 exclude: ['createdAt', 'updated_at']
             }
@@ -85,5 +92,80 @@ router.put('/:id', async (req, res, next) => {
         next(error);
     }
 })
+
+router.post('/forgotPassword',
+    async(req, res, next) => {
+        try {
+            let email = req.body.email;
+
+            const user = await User.findOne ({
+                where: {
+                    email: email
+                }
+            });
+            
+            if (!user) {
+                throw new QueryError('Confira o email fornecido.');
+            }
+
+            var token = randtoken.generate(6);
+            var sent = await sendEmail(email, token, message.PASSWORD_SUBJECT, message.HTML_PASSWORD);
+
+            if (sent === true) {
+                user.passwordToken = token;
+                await user.save();
+            } else {
+                throw new InternalServerError('Erro interno do servidor no envio do email com o token.');
+            }
+
+            res.status(statusCodes.SUCCESS).json('Email com token enviado com sucesso');
+        } catch (error) {
+            next (error);
+        }
+    });
+
+router.post('/validateToken',
+    async(req, res, next) => {
+        try {
+            const user = await User.findOne({
+                where: {
+                    passwordToken: req.body.token
+                }
+            });
+    
+            if (!user) {
+                throw new QueryError('Confira se o token usado é semelhante ao que foi enviado ao seu email.');
+            }
+    
+            res.status(statusCodes.SUCCESS).json(user.id);
+        } catch (error) {
+            next(error);
+        }
+    });
+
+router.post('/resetPassword/:id',
+    async(req, res, next) => {
+        try {
+            const user = await User.findByPk(req.params.id);
+
+            if (!user) {
+                throw new QueryError('Usuário não encontrado!');
+            }
+
+            if(user.passwordToken == null){
+                throw new PermissionError('Você não possui permissão para realizar essa ação');
+            }
+
+            newPassword = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
+
+            user.passwordToken = null;
+            user.password = newPassword;
+            await user.save();
+
+            res.status(statusCodes.SUCCESS).json('Senha alterada com sucesso');
+        } catch (error) {
+            next(error);
+        }
+    })
 
 module.exports = router;
