@@ -3,6 +3,11 @@ const router = require("express").Router();
 const bcrypt = require('bcrypt');
 const generalConstants = require("../../../../utils/constants/generalConstants");
 
+router.post('/login', notLoggedIn, logginMiddleware);
+
+router.post('logout', )
+
+
 router.post('/', async (req, res, next) => {
     try {
         const user = {
