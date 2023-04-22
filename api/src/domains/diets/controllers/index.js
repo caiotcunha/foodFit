@@ -30,11 +30,12 @@ router.get('/userDiets/:UserId', async (req, res, next) => {
 
 router.get('/:dietId', async (req, res, next) => {
     try {
-        const diet =  await Diet.findByPk(req.params.id, {
+        const diet =  await Diet.findByPk(req.params.dietId, {
             attributes: {
                 exclude: ['createdAt', 'updatedAt']
             }
         });
+        console.log(diet);
 
         // if(!diet){
         //     throw new error;
