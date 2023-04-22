@@ -1,20 +1,17 @@
-const Diet = require("../models/Diet")
-const router = require("express").Router()
+const Diet = require("../models/Diet");
+const router = require("express").Router();
 
-
-// Create
 router.post('/', async (req, res, next) => {
     try {
-        await Diet.create(req.body)
+        await Diet.create(req.body);
 
-        res.status(201).send("Dieta criada com sucesso!")
+        res.status(201).send("Dieta criada com sucesso!");
     } catch (error) {
-        next(error)
+        next(error);
     }
 })
 
-// Get All Diets (do user)
-router.get('/:UserId', async (req, res, next) => {
+router.get('/userDiets/:UserId', async (req, res, next) => {
     try {
         const diets = await Diet.findAll({
             where: {
@@ -23,38 +20,29 @@ router.get('/:UserId', async (req, res, next) => {
             attributes: {
                 exclude: ['created_at', 'updated_at']
             }
-            
-        })
+        });
 
-        res.status(200).send(diets)
+        res.status(200).send(diets);
     } catch (error) {
-        next(error)
+        next(error);
     }
 })
 
-
-// Get by ID
-router.get('/:UserId/:id', async (req, res, next) => {
+router.get('/:dietId', async (req, res, next) => {
     try {
-        const diet =  await Diet.findOne({
-            where: {
-                UserId: req.params.UserId,
-                id: req.params.id
-            },
+        const diet =  await Diet.findByPk(req.params.id, {
             attributes: {
                 exclude: ['created_at', 'updated_at']
             }
-        })
+        });
         if(!diet){
-            throw new error
+            throw new error;
         }
         
-        res.status(200).send(diet)
+        res.status(200).send(diet);
     } catch (error) {
-        next(error)
+        next(error);
     }
 })
 
-
-
-module.exports = router
+module.exports = router;
