@@ -4,10 +4,11 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import RoutesApp from './routes'
 import LoginPage from './pages/loginPage'
+import HomePage from './pages/homePage/HomePage'
 
 function App() {
   return (
-    <LoginPage></LoginPage>
+    <HomePage></HomePage>
   )
 }
 

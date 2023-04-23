@@ -1,0 +1,28 @@
+.AboutContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: start;
+  width: 100vw;
+  height: 30vh;
+  background-color: #fff;
+}
+.AboutContainer .AboutText {
+  width: 80vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.AboutContainer .AboutText h2 {
+  text-align: center;
+  color: #7209b7;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 10px;
+}
+.AboutContainer .Button {
+  width: 20vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}/*# sourceMappingURL=style.css.map */

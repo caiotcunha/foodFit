@@ -1,0 +1,34 @@
+.Banner {
+  position: relative;
+  background-image: url(../../../../assets/comida.jpg);
+  background-size: cover;
+  height: 40vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* Add the blur effect */
+  filter: blur(2px);
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.textContainer {
+  position: absolute;
+  top: 13%;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.textContainer h1 {
+  max-width: 300px;
+  font-size: 2.5rem;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  z-index: 1;
+}/*# sourceMappingURL=style.css.map */
