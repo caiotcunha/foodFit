@@ -7,6 +7,8 @@ Membros da equipe: Caio Teles Cunha e Gabriel Castelo (frontend), Ivan Vilaça e
 
 Linguaguem: javaScript, utilizaremos o framework react no frontend
 
+Design da tela de dietas: (aqui)[https://www.figma.com/file/fc34B2LVQw1uqhjS7q50cc/FoodFit?node-id=0-1&t=liLu85AEZLs7dIJ4-0]
+
 ---
 ## Backlog
 
