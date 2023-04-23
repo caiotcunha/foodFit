@@ -4,7 +4,7 @@ import "./style.css"
 export default function DietPage() {
     return (
         <>
-
+            
         </>
     );
 }
