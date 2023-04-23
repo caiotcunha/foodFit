@@ -18,6 +18,10 @@ const User = sequelize.define('User', {
         allowNull: false,
         unique: false
     },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     weight: {
         type: DataTypes.DOUBLE,
         allowNull: false
@@ -36,7 +40,19 @@ const User = sequelize.define('User', {
     } 
 })
 
-User.hasMany(Diet)
-Diet.belongsTo(User)
+User.hasMany(Diet);
+Diet.belongsTo(User);
 
-module.exports = User
+// User.sync({alter: false, force: true})
+//   .then(() => {
+//     console.log('User table was (re)created');
+//   })
+//   .catch((err) => console.log(err));
+
+// Diet.sync({alter: false, force: true})
+//   .then(() => {
+//     console.log('Diet table was (re)created');
+//   })
+//   .catch((err) => console.log(err));
+
+module.exports = User;

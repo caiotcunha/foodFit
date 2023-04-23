@@ -28,6 +28,6 @@ const Diet = sequelize.define('Diet', {
         type: DataTypes.STRING,
         allowNull: false
     }   
-})
+});
 
 module.exports = Diet
