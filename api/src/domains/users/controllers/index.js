@@ -75,16 +75,7 @@ router.post('/forgotPassword',
 router.post('/validateToken',
     async(req, res, next) => {
         try {
-            const user = await User.findOne({
-                where: {
-                    passwordToken: req.body.token
-                }
-            });
-    
-            if (!user) {
-                throw new QueryError('Confira se o token usado é semelhante ao que foi enviado ao seu email.');
-            }
-    
+            await UserService.validateToken(req.body.token);
             res.status(statusCodes.SUCCESS).json(user.id);
         } catch (error) {
             next(error);
@@ -94,22 +85,7 @@ router.post('/validateToken',
 router.post('/resetPassword/:id',
     async(req, res, next) => {
         try {
-            const user = await User.findByPk(req.params.id);
-
-            if (!user) {
-                throw new QueryError('Usuário não encontrado!');
-            }
-
-            if(user.passwordToken == null){
-                throw new PermissionError('Você não possui permissão para realizar essa ação');
-            }
-
-            newPassword = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
-
-            user.passwordToken = null;
-            user.password = newPassword;
-            await user.save();
-
+            await UserService.resetPassword(req.params.id);
             res.status(statusCodes.SUCCESS).json('Senha alterada com sucesso');
         } catch (error) {
             next(error);

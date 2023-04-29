@@ -89,7 +89,35 @@ class UserService {
         }
     }
 
-    
+    async validateToken(token){
+        const user = await User.findOne({
+            where: {
+                passwordToken: token
+            }
+        });
+
+        if (!user) {
+            throw new QueryError('Confira se o token usado é semelhante ao que foi enviado ao seu email.');
+        }
+    }
+
+    async resetPassword(id){
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            throw new QueryError('Usuário não encontrado!');
+        }
+
+        if(user.passwordToken == null){
+            throw new PermissionError('Você não possui permissão para realizar essa ação');
+        }
+
+        newPassword = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
+
+        user.passwordToken = null;
+        user.password = newPassword;
+        await user.save();
+    }
 }
 
 module.exports = new UserService;
