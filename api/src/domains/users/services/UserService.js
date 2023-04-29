@@ -66,6 +66,30 @@ class UserService {
 
         await user.update(body);
     }
+
+    async forgotPassword(email){
+        const user = await User.findOne({
+            where: {
+                email: email
+            }
+        });
+        
+        if (!user) {
+            throw new QueryError('Confira o email fornecido.');
+        }
+
+        var token = randtoken.generate(6);
+        var sent = await sendEmail(email, token, message.PASSWORD_SUBJECT, message.HTML_PASSWORD);
+
+        if (sent === true) {
+            user.passwordToken = token;
+            await user.save();
+        } else {
+            throw new InternalServerError('Erro interno do servidor no envio do email com o token.');
+        }
+    }
+
+    
 }
 
 module.exports = new UserService;

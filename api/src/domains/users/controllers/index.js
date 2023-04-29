@@ -65,28 +65,7 @@ router.put('/:id',
 router.post('/forgotPassword',
     async(req, res, next) => {
         try {
-            let email = req.body.email;
-
-            const user = await User.findOne ({
-                where: {
-                    email: email
-                }
-            });
-            
-            if (!user) {
-                throw new QueryError('Confira o email fornecido.');
-            }
-
-            var token = randtoken.generate(6);
-            var sent = await sendEmail(email, token, message.PASSWORD_SUBJECT, message.HTML_PASSWORD);
-
-            if (sent === true) {
-                user.passwordToken = token;
-                await user.save();
-            } else {
-                throw new InternalServerError('Erro interno do servidor no envio do email com o token.');
-            }
-
+            await UserService.forgotPassword(req.body.email);
             res.status(statusCodes.SUCCESS).json('Email com token enviado com sucesso');
         } catch (error) {
             next (error);
