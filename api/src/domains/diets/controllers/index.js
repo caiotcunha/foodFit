@@ -19,7 +19,7 @@ router.get('/userDiets/',
     async (req, res, next) => {
     try {
         console.log(req.user);
-        const diets = await DietService.getUserDiets(req.user.id);
+        const diets = await DietService.getAllUserDiets(req.user.id);
         res.status(200).send(diets);
     } catch (error) {
         next(error);
@@ -30,12 +30,7 @@ router.get('/:dietId',
     verifyJwt,
     async (req, res, next) => {
     try {
-        const diet =  await Diet.findByPk(req.params.dietId, {
-            attributes: {
-                exclude: ['createdAt', 'updatedAt']
-            }
-        });
-        
+        const diet = await DietService.getUserDiet(req.params.dietId, req.user.id);        
         res.status(200).send(diet);
     } catch (error) {
         next(error);

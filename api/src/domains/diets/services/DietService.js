@@ -3,7 +3,7 @@ const User = require("../../users/models/User");
 const generateDiet = require('../../../../utils/functions/generateDiet');
 
 const QueryError = require("../../../../errors/QueryError");
-
+const PermissionError = require("../../../../errors/PermissinError");
 
 class DietService {
     async create(body, userId) {
@@ -20,7 +20,7 @@ class DietService {
         await Diet.create(diet);
     }
 
-    async getUserDiets(userId) {
+    async getAllUserDiets(userId) {
         const user = User.findByPk(userId);
 
         if (!user) {
@@ -41,6 +41,24 @@ class DietService {
         }
 
         return diets;
+    }
+
+    async getUserDiet(dietId, userId) {
+        const diet =  await Diet.findByPk(dietId, {
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            }
+        });
+
+        if (diet.UserId != userId) {
+            throw new PermissionError('Esta dieta não pertence ao usuário fornecido.');
+        }
+
+        if (!diet) {
+            throw new QueryError('Confira o id de dieta fornecido.');
+        }
+
+        return diet;
     }
 }
 
