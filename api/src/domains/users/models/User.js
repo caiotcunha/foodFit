@@ -43,11 +43,11 @@ const User = sequelize.define('User', {
 User.hasMany(Diet);
 Diet.belongsTo(User);
 
-// User.sync({alter: false, force: true})
-//   .then(() => {
-//     console.log('User table was (re)created');
-//   })
-//   .catch((err) => console.log(err));
+//User.sync({alter: false, force: true})
+//  .then(() => {
+//    console.log('User table was (re)created');
+//  })
+//  .catch((err) => console.log(err));
 
 // Diet.sync({alter: false, force: true})
 //   .then(() => {
