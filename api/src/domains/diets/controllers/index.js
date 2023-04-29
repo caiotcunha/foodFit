@@ -1,5 +1,4 @@
 const { verifyJwt } = require("../../../middlewares/auth");
-const Diet = require("../models/Diet");
 const DietService = require("../services/DietService");
 const router = require("express").Router();
 
