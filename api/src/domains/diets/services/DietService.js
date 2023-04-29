@@ -17,7 +17,8 @@ class DietService {
         }
 
         diet.diet = await generateDiet(diet.weight, diet.goal, diet.calories, diet.restrictions);
-        await Diet.create(diet);
+        console.log(diet.diet);
+        // await Diet.create(diet);
     }
 
     async getAllUserDiets(userId) {
