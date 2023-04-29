@@ -17,8 +17,7 @@ class DietService {
         }
 
         diet.diet = await generateDiet(diet.weight, diet.goal, diet.calories, diet.restrictions);
-        console.log(diet.diet);
-        // await Diet.create(diet);
+        await Diet.create(diet);
     }
 
     async getAllUserDiets(userId) {
@@ -50,13 +49,13 @@ class DietService {
                 exclude: ['createdAt', 'updatedAt']
             }
         });
+        
+        if (!diet) {
+            throw new QueryError('Confira o id de dieta fornecido.');
+        }
 
         if (diet.UserId != userId) {
             throw new PermissionError('Esta dieta não pertence ao usuário fornecido.');
-        }
-
-        if (!diet) {
-            throw new QueryError('Confira o id de dieta fornecido.');
         }
 
         return diet;

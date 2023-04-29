@@ -18,7 +18,6 @@ router.get('/userDiets/',
     verifyJwt,
     async (req, res, next) => {
     try {
-        console.log(req.user);
         const diets = await DietService.getAllUserDiets(req.user.id);
         res.status(200).send(diets);
     } catch (error) {
