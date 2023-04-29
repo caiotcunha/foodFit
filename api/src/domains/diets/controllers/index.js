@@ -1,41 +1,34 @@
-const Diet = require("../models/Diet");
+const { verifyJwt } = require("../../../middlewares/auth");
+const DietService = require("../services/DietService");
 const router = require("express").Router();
 
-router.post('/', async (req, res, next) => {
+router.post('/', 
+    verifyJwt,
+    async (req, res, next) => {
     try {
-        await Diet.create(req.body);
-
-        res.status(201).send("Dieta criada com sucesso!");
+        await DietService.create(req.body, req.user.id);
+        res.status(201).json('Dieta criada com sucesso');
     } catch (error) {
         next(error);
     }
 })
 
-router.get('/userDiets/:UserId', async (req, res, next) => {
+router.get('/userDiets/', 
+    verifyJwt,
+    async (req, res, next) => {
     try {
-        const diets = await Diet.findAll({
-            where: {
-                UserId: req.params.UserId
-            },
-            attributes: {
-                exclude: ['createdAt', 'updatedAt']
-            }
-        });
-
+        const diets = await DietService.getAllUserDiets(req.user.id);
         res.status(200).send(diets);
     } catch (error) {
         next(error);
     }
 })
 
-router.get('/:dietId', async (req, res, next) => {
+router.get('/:dietId', 
+    verifyJwt,
+    async (req, res, next) => {
     try {
-        const diet =  await Diet.findByPk(req.params.dietId, {
-            attributes: {
-                exclude: ['createdAt', 'updatedAt']
-            }
-        });
-        
+        const diet = await DietService.getUserDiet(req.params.dietId, req.user.id);        
         res.status(200).send(diet);
     } catch (error) {
         next(error);
