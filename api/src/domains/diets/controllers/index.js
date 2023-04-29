@@ -1,11 +1,22 @@
 const Diet = require("../models/Diet");
 const router = require("express").Router();
+const generateDiet = require('../../../../utils/functions/generateDiet');
 
 router.post('/', async (req, res, next) => {
     try {
+        const diet = {
+            diet: req.body.diet,
+            weight: req.body.weight,
+            goal: req.body.goal,
+            calories: req.body.calories,
+            restrictions: req.body.restrictions,
+            UserId: req.body.UserId
+        }
+
+        diet.diet = await generateDiet(diet.weight, diet.goal, diet.calories, diet.restrictions);
         await Diet.create(req.body);
 
-        res.status(201).send("Dieta criada com sucesso!");
+        res.status(201).json(diet.diet);
     } catch (error) {
         next(error);
     }
