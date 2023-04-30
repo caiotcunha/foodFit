@@ -1,0 +1,20 @@
+.butt {
+    background-color: #F72585;
+    box-shadow: 4px 6px 2px rgba(181, 23, 158, 0.2);
+    border-radius: 8px;
+
+    color: #FFFFFF;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2vw;
+    line-height: 36px;
+    text-align: center;
+}
+
+.butt:hover{
+    background-color: #FFFFFF;
+    border: 1px solid #F72585;
+    box-shadow: none;
+    color: #F72585;
+}
