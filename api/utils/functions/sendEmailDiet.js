@@ -9,6 +9,8 @@ async function sendEmailDiet(email, subject, textEmail, diet) {
         }
     });
 
+    diet = diet.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
     var mailOptions = {
         from: process.env.EMAIL,
         to: email,
@@ -16,13 +18,12 @@ async function sendEmailDiet(email, subject, textEmail, diet) {
         html: `
             <h1> FoodFit</h1>
             <br/>
-            <p style = "font-size: 18px">${textEmail}</p>
+            <p style = "font-color:black; font-size: 18px">${textEmail}</p>
             <br/>
             <div>
-                <p style="color:black ; font-size: 18px;"> ${diet}</p>
+                <p style="color:black; font-size: 18px;"> ${diet}</p>
             </div>
             <br/>
-            <p style = "font-size: 16px">Escreva o código na área solicitada no aplicativo para definir uma nova senha</p> 
         `
     };
 
