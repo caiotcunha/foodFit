@@ -1,9 +1,11 @@
 const Diet = require("../models/Diet");
 const User = require("../../users/models/User");
 const generateDiet = require('../../../../utils/functions/generateDiet');
+const message = require('../../../../utils/constants/message');
 
 const QueryError = require("../../../../errors/QueryError");
 const PermissionError = require("../../../../errors/PermissinError");
+const sendEmailDiet = require("../../../../utils/functions/sendEmailDiet");
 
 class DietService {
     async create(body, userId) {
@@ -59,6 +61,29 @@ class DietService {
         }
 
         return diet;
+    }
+
+    async sendEmail(dietId, userId) {
+        const user = User.findByPk(userId);
+
+        if (!user) {
+            throw new ('Id de usuário não encontrado no banco.');
+        }
+
+        const diet = await Diet.findByPk(dietId);
+
+        if (!diet) {
+            throw new QueryError('Confira o id de dieta fornecido.');
+        }
+
+        const sent = await sendEmailDiet(user.email, message.DIET_SUBJECT, message.DIET_TEXT, diet.diet);
+
+        if (sent === true) {
+            user.passwordToken = token;
+            await user.save();
+        } else {
+            throw new InternalServerError('Erro interno do servidor no envio do email com o token.');
+        }        
     }
 }
 
