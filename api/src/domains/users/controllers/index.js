@@ -55,7 +55,7 @@ router.put('/:id',
     verifyJwt,
     async (req, res, next) => {
         try {
-            await UserService.update(req.user.id)
+            await UserService.update(req.user.id, req.body)
             res.status(statusCodes.SUCCESS).send("Usuário alterado com sucesso!");
         } catch (error) {
             next(error);
@@ -75,8 +75,8 @@ router.post('/forgotPassword',
 router.post('/validateToken',
     async(req, res, next) => {
         try {
-            await UserService.validateToken(req.body.token);
-            res.status(statusCodes.SUCCESS).json(user.id);
+            const userId = await UserService.validateToken(req.body.token);
+            res.status(statusCodes.SUCCESS).json(userId);
         } catch (error) {
             next(error);
         }
@@ -85,7 +85,7 @@ router.post('/validateToken',
 router.post('/resetPassword/:id',
     async(req, res, next) => {
         try {
-            await UserService.resetPassword(req.params.id);
+            await UserService.resetPassword(req.params.id, req.body.password);
             res.status(statusCodes.SUCCESS).json('Senha alterada com sucesso');
         } catch (error) {
             next(error);
