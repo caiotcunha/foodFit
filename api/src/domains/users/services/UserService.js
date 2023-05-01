@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require('bcrypt');
 const randtoken = require('rand-token');
-const statusCodes = require("../../../../utils/constants/statusCodes");
 const sendEmail = require("../../../../utils/functions/sendEmail");
 const message = require('../../../../utils/constants/message');
 
@@ -28,7 +27,7 @@ class UserService {
     async getAll(){
         const users =  await User.findAll({
             attributes: {
-                exclude: ['createdAt', 'updatedAt']
+                exclude: ['createdAt', 'updatedAt', 'password', 'passwordToken']
             }
         });
         
@@ -42,7 +41,7 @@ class UserService {
     async myProfile(userId){
         const user =  await User.findByPk(userId, {
             attributes: {
-                exclude: ['createdAt', 'updated_at', 'password']
+                exclude: ['createdAt', 'updatedAt', 'password', 'passwordToken']
             }
         });
 
@@ -99,9 +98,11 @@ class UserService {
         if (!user) {
             throw new QueryError('Confira se o token usado é semelhante ao que foi enviado ao seu email.');
         }
+
+        return user.id;
     }
 
-    async resetPassword(id){
+    async resetPassword(id, password){
         const user = await User.findByPk(id);
 
         if (!user) {
@@ -112,7 +113,7 @@ class UserService {
             throw new PermissionError('Você não possui permissão para realizar essa ação');
         }
 
-        newPassword = await bcrypt.hash(req.body.password, generalConstants.SALT_ROUNDS);
+        const newPassword = await bcrypt.hash(password, generalConstants.SALT_ROUNDS);
 
         user.passwordToken = null;
         user.password = newPassword;

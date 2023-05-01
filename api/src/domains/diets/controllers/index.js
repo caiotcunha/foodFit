@@ -1,3 +1,4 @@
+const statusCodes = require("../../../../utils/constants/statusCodes");
 const { verifyJwt } = require("../../../middlewares/auth");
 const DietService = require("../services/DietService");
 const router = require("express").Router();
@@ -12,6 +13,17 @@ router.post('/',
         next(error);
     }
 })
+
+router.post('/sendEmail/:dietId', 
+    verifyJwt,
+    async(req, res, next) => {
+        try {
+            await DietService.sendEmail(req.params.dietId, req.user.id);
+            res.status(statusCodes.SUCCESS).json('Dieta enviada para o email com sucesso');
+        } catch (error) {
+            next(error);
+        }
+    })
 
 router.get('/userDiets/', 
     verifyJwt,
