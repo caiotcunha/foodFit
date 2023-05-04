@@ -16,7 +16,7 @@ import Logo from "../../assets/logo_semfundo.png"
 export default function DietPage() {
     const [showForm, setShowForm] = useState(false);
     const [page, setPage] = useState(1);
-    const [data, setData] = useState({});
+    const [data, setData] = useState({diet : "dietaX"});
     const [buttonText, setButtonText] = useState("Continuar");
     
     const [dieta, setDieta] = ("");
@@ -32,13 +32,22 @@ export default function DietPage() {
 
 
     /**
-     * FAZER CONEXÃO COM O BACK AQUI, POR FAVOR COLOCAR A RESPOSTA NO STATE DIETA!
+     * FAZER CONEXÃO COM O BACK AQUI, POR FAVOR COLOCAR A RESPOSTA NO STATE DIETA!\
+     * 
+     * Todos os dados já vão estar bonitinhos em um JSON com o formato que eles querem no back:
+     * {
+     *      diet: "nomeDieta",
+     *      weight: 65,
+     *      goal: "objetivo do maluco",
+     *      calories: 20000,
+     *      restrictions: "restrições",
+     *      UserID: ?
+     * }
+     * A única coisa que vai faltar ai é o UID, que eu n sei se vc tá armazenando isso em algum lugar ou coisa assim, ai deixo em suas mãos kkkk, mas facilitei o máximo que consegui pra vc
      */
-    const handleSubmit = () => {
-        // let stringDieta = "Eu gostaria de uma dieta completa, com o objetivo de " + objetivo + ". Eu possuo " + data['altura'] + " de altura, peso " + data['peso'] + "kg e tenho " + data['idade'] + " anos.";
-
+    const handleSubmit = () => {        
         console.log(data);
-
+        
         // Beijos ao Caio que se disponibilizou a fazer a conexão com o back. Lov you.
     }
 
@@ -132,11 +141,12 @@ export default function DietPage() {
                             </RadioGroup>
                         </div>
                         <div className="title2">
-                            Qual o seu peso atual?
+                            Qual o seu peso atual? Quantas calorias quer ingerir?
                         </div>
                         <div className="r2">
                             <ThemeProvider theme={theme}>
                                 <TextField id="weight" color="primary" label="Peso" type="number" onChange={(e) => changeData(e)}/>
+                                <TextField id="calories" color="primary" label="Calorias" type="number" onChange={(e) => changeData(e)}/>
                             </ThemeProvider>
                         </div>
                     </div>
