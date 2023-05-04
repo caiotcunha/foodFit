@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { FaRegUserCircle } from "react-icons/fa";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineMenu, AiOutlineArrowLeft } from "react-icons/ai";
 import { RxDoubleArrowDown } from "react-icons/rx";
 
 import { TextField, Radio, RadioGroup } from "@mui/material";
@@ -17,15 +17,16 @@ export default function DietPage() {
     const [showForm, setShowForm] = useState(false);
     const [page, setPage] = useState(1);
     const [data, setData] = useState({});
-    const [objetivo, setObjetivo] = useState("emagrecimento")
-    const [buttonText, setButtonText] = useState("Continuar")
-    const [restricoes, setRestr] = useState("")
+    const [buttonText, setButtonText] = useState("Continuar");
+    
     const [dieta, setDieta] = ("");
 
     
     useEffect(() => {
         if(page == 2){
             setButtonText("Transformar minha Alimentação 🔥")
+        }else{
+            setButtonText("Continuar!")
         }
     }, [page])
 
@@ -34,18 +35,11 @@ export default function DietPage() {
      * FAZER CONEXÃO COM O BACK AQUI, POR FAVOR COLOCAR A RESPOSTA NO STATE DIETA!
      */
     const handleSubmit = () => {
-        let stringDieta = "Eu gostaria de uma dieta completa, com o objetivo de " + objetivo + ". Eu possuo " + data['altura'] + " de altura, peso " + data['peso'] + "kg e tenho " + data['idade'] + " anos.";
-        
-        if(restricoes !== ""){
-            stringDieta = stringDieta.concat(" Não posso comer: " + restricoes);
-        }
+        // let stringDieta = "Eu gostaria de uma dieta completa, com o objetivo de " + objetivo + ". Eu possuo " + data['altura'] + " de altura, peso " + data['peso'] + "kg e tenho " + data['idade'] + " anos.";
+
+        console.log(data);
 
         // Beijos ao Caio que se disponibilizou a fazer a conexão com o back. Lov you.
-    }
-
-
-    const handleRest = (e) => {
-        setRestr(e.target.value);
     }
 
 
@@ -71,9 +65,6 @@ export default function DietPage() {
         setData(newData);
     }
 
-    const radioChange = (event) => {
-        setObjetivo(event.target.value);
-    }
 
     const theme = createTheme({
         palette: {
@@ -101,17 +92,51 @@ export default function DietPage() {
             form:
                 <>
                     <div className="f1">
-                        <div className="r1">
-                            <ThemeProvider theme={theme}>
-                                <TextField id="idade" color="primary" label="Idade" type="number" onChange={(e) => changeData(e)}/>
-                                <TextField id="peso" color="primary" label="Peso" type="number" onChange={(e) => changeData(e)}/>
-
-                            </ThemeProvider>
+                        <div className="title2">
+                            Qual o seu objetivo?
                         </div>
+                        <div className="r1">
+                            <RadioGroup row>
+                                <label>
+                                    <Radio 
+                                        checked={data['goal'] === 'emagrecimento'} 
+                                        value='emagrecimento'
+                                        id='goal'
+                                        inputProps={{'aria-label' : 'Emagrecimento'}}
+                                        onChange={(e) => changeData(e)}
+                                    />
+                                    Emagrecimento
+                                </label>
 
+                                <label htmlFor="">
+                                    <Radio 
+                                        checked={data['goal'] === 'ganho de massa magra'} 
+                                        value='ganho de massa magra'
+                                        id='goal'
+                                        inputProps={{'aria-label' : 'Massa Magra'}}
+                                        onChange={(e) => changeData(e)}
+                                    />
+                                    Massa Magra
+                                </label>
+
+                                <label htmlFor="">
+                                    <Radio 
+                                        checked={data['goal'] === 'ganho de peso'} 
+                                        value='ganho de peso'
+                                        id='goal'
+                                        onChange={(e) => changeData(e)}
+                                        inputProps={{'aria-label' : 'Perda de Peso'}}
+                                    />
+                                    Ganho de Peso
+                                </label>
+                            </RadioGroup>
+                        </div>
+                        <div className="title2">
+                            Qual o seu peso atual?
+                        </div>
                         <div className="r2">
                             <ThemeProvider theme={theme}>
-                                <TextField id="altura" color="primary" label="Altura" type="number"onChange={(e) => changeData(e)} />
+                                <TextField id="weight" color="primary" label="Peso" type="number" onChange={(e) => changeData(e)}/>
                             </ThemeProvider>
                         </div>
                     </div>
@@ -122,49 +147,15 @@ export default function DietPage() {
             form:
                 <>
                     <div className="f1">
-                        <div className="r1">
-                            <RadioGroup row>
-                                <label>
-                                    <Radio 
-                                        checked={objetivo === 'emagrecimento'} 
-                                        value='emagrecimento'
-                                        inputProps={{'aria-label' : 'Emagrecimento'}}
-                                        onChange={(e) => radioChange(e)}
-                                    />
-                                    Emagrecimento
-                                </label>
-
-                                <label htmlFor="">
-                                    <Radio 
-                                        checked={objetivo === 'massa magra'} 
-                                        value='massa magra'
-                                        inputProps={{'aria-label' : 'Massa Magra'}}
-                                        onChange={(e) => radioChange(e)}
-                                    />
-                                    Massa Magra
-                                </label>
-
-                                <label htmlFor="">
-                                    <Radio 
-                                        checked={objetivo === 'ganho de peso'} 
-                                        value='ganho de peso'
-                                        onChange={(e) => radioChange(e)}
-                                        inputProps={{'aria-label' : 'Perda de Peso'}}
-                                    />
-                                    Ganho de Peso
-                                </label>
-                            </RadioGroup>
-                        </div>
-
                         <div className="r2 rest">
                             <ThemeProvider theme={theme}>
                                 <TextField 
                                     multiline 
                                     fullWidth
-                                    onChange={(e) => handleRest(e)}
+                                    onChange={(e) => changeData(e)}
                                     style={{height:'100%'}}
                                     maxRows='4'
-                                    id="rest" 
+                                    id="restrictions" 
                                     label="Alguma Restrição?"
                                     helperText="Caso não haja restrições, deixe o campo em branco."
                                 />
@@ -227,6 +218,10 @@ export default function DietPage() {
                                     <ButtonComponent text={buttonText} width="220%" height="40px" />
                                 </div>
 
+                                {page == 2 && <div className="return" onClick={() => {setPage(1)}}>
+                                    <AiOutlineArrowLeft />
+                                    Voltar
+                                </div>}
                             </div>
                         </>
                     }
