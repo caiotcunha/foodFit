@@ -9,6 +9,19 @@ const InternalServerError = require("../../../../errors/InternalServerError");
 const generalConstants = require('../../../../utils/constants/generalConstants');
 
 class UserService {
+    async userExists (email) {
+        const user = await User.findOne({
+            where: {
+                email: email
+            }
+        });
+
+        if(user){
+            throw new QueryError('Usuário já cadastrado');
+        }
+
+    }
+
     async create(body){
         const user = {
             name: body.name,
@@ -18,6 +31,8 @@ class UserService {
             height: body.height,
             age: body.age
         }
+
+        await this.userExists(body.email);
 
         user.password = await bcrypt.hash(body.password, generalConstants.SALT_ROUNDS);
 
