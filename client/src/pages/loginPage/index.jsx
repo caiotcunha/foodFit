@@ -81,9 +81,16 @@ export default function LoginPage() {
                 <Button className="buttonSubmit" type="submit" onClick={handleSubmit} variant="contained" sx = {{ width: '100%' }}>Entrar</Button>
                 <hr></hr>
               </form>
+
               <Link href = "/forgotPassword">
                 <Typography style={TypograpySubTitleStyle}>
                   esqueci minha senha
+                </Typography>
+              </Link>
+              
+              <Link href = "/cadastro">
+                <Typography style={TypograpySubTitleStyle}>
+                  Criar conta!
                 </Typography>
               </Link>
         </BoxLogoComponent>

@@ -14,6 +14,7 @@ import ForgotPasswordPage from './pages/forgotPasswordPage';
 import ValidateTokenPage from './pages/validateTokenPage';
 import ChangePasswordPage from './pages/changePasswordPage';
 import ListDietsPage from './pages/listDietsPage';
+import CadastroPage from './pages/cadastroPage';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: '/listDiets',
     element: <ListDietsPage/>
+  },
+  {
+    path: '/cadastro',
+    element: <CadastroPage />
   },
 
 ])
