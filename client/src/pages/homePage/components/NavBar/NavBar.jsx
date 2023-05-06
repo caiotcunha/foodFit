@@ -5,8 +5,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Grape from '../../../../assets/grape_semfundo.png'
+import { useNavigate } from 'react-router';
+
+
 
 function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
@@ -20,7 +25,7 @@ function NavBar() {
             >
                 <img src={Grape} alt="Grape" style={{width: '35px', height: '35px'}}/>
             </IconButton>
-            <Button color="inherit" sx={{borderRadius:'10px',backgroundColor:'#FFFFFF', color:'#7209b7'}}>Login</Button>
+            <Button color="inherit" sx={{borderRadius:'10px',backgroundColor:'#FFFFFF', color:'#7209b7'}} onClick={()=>navigate("/login")}>Login</Button>
         </Toolbar>
         </AppBar>
     </Box>

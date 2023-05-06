@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.css";
 import Stack from '@mui/material/Stack';
+import Grape from './../../assets/grape_semfundo.png'
 
 import {
   Grid
@@ -35,9 +36,9 @@ export default function BoxLogoComponent(props) {
             direction="row"
             sx={BoxStyle}
             >
-                <Grid item xs={6} className= "LeftBox" display="flex">
+                <Grid item xs={6} className= "LeftBox" display="flex" alignContent="center" justifyContent="center">
                     <Stack spacing={2} width="100%" display="flex" alignContent="center" justifyContent="center">
-                        <h1>logo</h1>
+                        <img src={Grape} alt="Grape" style={{width: '200px', height: '200px', alignSelf:'center'}}/>
                     </Stack>
                     <Divider width="2px" orientation="vertical"/>
                 </Grid>
