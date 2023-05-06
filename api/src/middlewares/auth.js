@@ -44,7 +44,7 @@ async function loginMiddleware(req, res, next) {
 
         signJwt(user, res);
 
-        res.status(statusCodes.NO_CONTENT).end();
+        res.json(user.id);
     } catch (error) {
         next (error);
     }
