@@ -19,4 +19,20 @@
 
 .Mui-focused {
   color: #7209b7;
+}
+
+.BoxLogo {
+  width: 100vw;
+  height: 100vh;
+  background-color: #F2F2F2;
+  margin: 0;
+}
+
+.dieta {
+  padding: 20px;
+  overflow: scroll;
+}
+
+.css-5mr8c8-MuiButtonBase-root-MuiButton-root {
+  background-color: #7209b7 !important;
 }/*# sourceMappingURL=style.css.map */

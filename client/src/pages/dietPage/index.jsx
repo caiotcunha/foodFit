@@ -13,6 +13,10 @@ import ButtonComponent from "../../components/ButtonComponent/button";
 import "./style.css"
 import Logo from "../../assets/logo_semfundo.png"
 
+import { CreateDiet, GetAllDiets, SendDietEmail } from "../../services/requests";
+
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router";
 
 export default function DietPage() {
     const [showForm, setShowForm] = useState(false);
@@ -21,7 +25,10 @@ export default function DietPage() {
     const [data, setData] = useState({diet : "dietaX"});
     const [buttonText, setButtonText] = useState("Continuar");
     
-    const [dieta, setDieta] = ("");
+    const [dieta, setDieta] = useState("");
+
+    const navigate = useNavigate();
+
     
 
     useEffect(() => {
@@ -47,11 +54,29 @@ export default function DietPage() {
      * }
      * A única coisa que vai faltar ai é o UID, que eu n sei se vc tá armazenando isso em algum     lugar ou coisa assim, ai deixo em suas mãos kkkk, mas facilitei o máximo que consegui pra vc
      */
-    const handleSubmit = () => {        
-        console.log(data);
+    function handleSubmit(){
+        const id = localStorage.getItem('id');
+        data.restrictions ? data.restrictions = data.restrictions : data.restrictions = "Nenhuma";
+        CreateDiet(data.diet,data.weight,data.goal,data.calories,data.restrictions,id).then((res) => {
+            console.log(res);
+            GetAllDiets().then((diet) => {
+                console.log(diet);
+                localStorage.setItem('dietId', diet.data[diet.data.length - 1].id);
+                setDieta(diet.data[diet.data.length - 1].diet);
+            })
+        });
         
         setShowForm(false);
         setShowResult(true);
+
+    }
+
+    function handleEmail(){
+        console.log("enviar email");
+        const id = localStorage.getItem('dietId');
+        SendDietEmail(id).then((res) => {
+            console.log(res);
+        });
 
     }
     
@@ -104,7 +129,11 @@ export default function DietPage() {
             title: "Um pouco mais sobre você...",
             index: 2
         }    
-    ];    
+    ];
+    function NewlineText(props) {
+        const text = props.text;
+        return <div>{text}</div>;
+    }
 
 
     const Forms = [
@@ -200,7 +229,7 @@ export default function DietPage() {
                             <FaRegUserCircle class="icon" />
                         </div>
                         <div className="menu">
-                            <AiOutlineMenu class="icon" />
+                            <AiOutlineMenu class="icon" onClick={()=>navigate('/listDiets')}/>
                         </div>
                     </div>
 
@@ -252,10 +281,11 @@ export default function DietPage() {
                             <div className="white-box">
                                 <div className="quest-title">Sua nova vida está aqui!</div>
                                 <div className="result">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime blanditiis officiis at corporis itaque illo velit fugit quod libero quo recusandae quis dolorem temporibus sit, earum delectus, culpa aliquam tempore! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur quaerat iure quidem velit placeat adipisci modi praesentium cum expedita, aut doloribus, quisquam, maiores fugit nostrum magni corporis inventore reiciendis! Ullam.lorem lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt dolorum harum non, dicta laudantium, officia eos dolores fuga explicabo, vitae eius! Totam reiciendis at sequi cum, quas voluptatum sunt dolor. Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi aspernatur ducimus eos dolor architecto error, cupiditate beatae esse aut, distinctio dolores tempora? Doloremque facilis corporis voluptas nam rem, repellat quam.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit quisquam cum itaque odit quam, suscipit, unde tempore atque accusamus, ad ducimus. Excepturi et totam sit cumque quidem inventore, accusantium tempore! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati id excepturi laboriosam nam unde. Culpa, consequatur! Voluptatem nisi ab, rem sint necessitatibus tempore consequatur, quasi nam non veniam placeat fuga. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam nemo architecto voluptate voluptatum pariatur. Porro libero error dicta voluptates asperiores sed dolor atque dolorem reiciendis, facilis provident non eius aliquam?
-                                    {dieta}
+ 
+                                <NewlineText text={dieta} />
+    
                                 </div>
+                                <Button className="buttonSubmit" type="submit" onClick={handleEmail} variant="contained" sx = {{ width: '80%', marginBottom:'10px',backgroundColor:'#7209b7' }}>Envie para o seu email</Button>
                             </div>
                         </>
                     }

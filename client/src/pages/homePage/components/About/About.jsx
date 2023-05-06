@@ -3,8 +3,6 @@ import './style.css'
 import Grape from '../../../../assets/grape_semfundo.png'
 import IconButton from '@mui/material/IconButton';
 
-// components
-import Button from '@mui/material/Button';
 
 export default function About() {
 

@@ -7,9 +7,13 @@ import {
 } from "react-router-dom";
 
 import './App.css';
-import RoutesApp from './routes';
 import HomePage from './pages/homePage/HomePage';
 import DietPage from './pages/dietPage';
+import LoginPage from './pages/loginPage';
+import ForgotPasswordPage from './pages/forgotPasswordPage';
+import ValidateTokenPage from './pages/validateTokenPage';
+import ChangePasswordPage from './pages/changePasswordPage';
+import ListDietsPage from './pages/listDietsPage';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +23,28 @@ const router = createBrowserRouter([
   {
     path: '/dieta',
     element: <DietPage />
-  }
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/forgotPassword',
+    element: <ForgotPasswordPage />
+  },
+  {
+    path: '/validateToken',
+    element: <ValidateTokenPage/>
+  },
+  {
+    path: '/changePassword',
+    element: <ChangePasswordPage/>
+  },
+  {
+    path: '/listDiets',
+    element: <ListDietsPage/>
+  },
+
 ])
 
 function App() {
