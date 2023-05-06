@@ -10,8 +10,8 @@ export async function Logout(){
     return response;
 }
 
-export async function CreateUser(name, email,weight,age,password){
-    const response = await api.post('/api/users', {email:email, password:password,name:name,weight:weight,age:age});
+export async function CreateUser(name, email,weight,age,password, height){
+    const response = await api.post('/api/users', {email:email, password:password,name:name,weight:weight,age:age, height:height});
     return response;
 }
 
